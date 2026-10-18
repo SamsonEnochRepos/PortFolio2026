@@ -5,6 +5,7 @@ import { Flame } from "lucide-react";
 import Image from "next/image";
 import { useRef } from "react";
 import { site } from "@/content/site";
+import { asset } from "@/lib/asset";
 import { useIntroDelay } from "@/lib/useIntroDelay";
 import { GithubIcon, LinkedinIcon, XIcon } from "./BrandIcons";
 import { Magnetic } from "./Magnetic";
@@ -73,7 +74,7 @@ export function Portrait() {
         <div className="relative aspect-[4/5] overflow-hidden rounded-2xl [@media(min-width:1024px)_and_(max-height:780px)]:aspect-square bg-[var(--blue)]">
           <motion.div style={{ x: imgX, y: imgY }} className="absolute -inset-3">
             <Image
-              src="/images/blue.jpg"
+              src={asset("/images/blue.jpg")}
               alt={`Portrait of ${site.name}`}
               fill
               priority

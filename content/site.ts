@@ -103,7 +103,7 @@ export const projects: Project[] = [
     year: "2026",
     stack: ["Full-stack", "Workflow automation", "Dashboards", "Auth", "Database design"],
     metrics: [{ label: "Built at", value: "IGME" }, { label: "Location", value: "Dubai" }],
-    href: "/#experience",
+    href: "#experience",
   },
 ];
 

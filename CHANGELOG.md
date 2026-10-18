@@ -27,6 +27,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - Two-column home layout: the profile card stays pinned on the left (sticky from `lg` up) while hero, projects, experience, achievements, skills, writing and contact scroll on the right; the card's dashed arcs rotate with scroll and the card tilts toward the cursor. Stacks on mobile.
 
+- GitHub Pages deployment: static export (`output: "export"`, unoptimized images, trailing slashes), base path read from `NEXT_PUBLIC_BASE_PATH`, `lib/asset.ts` helper for `/public` URLs and `.github/workflows/deploy.yml` that builds and publishes `out/` on every push to `main`.
+
 ### Removed
 - Writing is hidden for now via `showWriting = false` in `content/site.ts` (home section, dock, footer, command palette and `/blog` routes return 404); set it to `true` when articles are ready.
 - Custom cursor ring, "blueprint" grid lens and x/y coordinate readout; the native cursor is used everywhere.
@@ -38,6 +40,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Replaced the earlier orange-sunglasses portrait (`portrait.png`) with the blue portrait; hero converted to a two-column layout (text left, portrait right; stacked on mobile).
 
 ### Fixed
+- Custom CLM card links to `#experience` (a plain anchor) so it works under a Pages base path.
 - Education block: heading moved out of the card (with a matching "Experience" heading), rows vertically centred and given even padding.
 - Preloader now has a failsafe timeout so it can never stay on screen if animation frames are paused.
 - Experience rows no longer overlap columns at narrow widths.
