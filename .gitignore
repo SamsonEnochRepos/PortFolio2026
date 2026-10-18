@@ -39,3 +39,19 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local tooling / editor
+.vscode/
+.idea/
+.claude/settings.local.json
+Thumbs.db
+*.log
+
+# source assets (optimised copies live in public/images)
+/assets/
+
+# secrets / local data
+*.key
+.env.local
+*.sqlite
+*.db

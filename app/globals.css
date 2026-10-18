@@ -1,26 +1,208 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: oklch(0.985 0 0);
+  --card: oklch(1 0 0);
+  --card-hover: oklch(0.97 0 0);
+  --line: oklch(0 0 0 / 0.09);
+  --fg: oklch(0.18 0 0);
+  --muted: oklch(0.45 0 0);
+  --accent: oklch(0.6 0.19 45);
+  --on-accent: oklch(1 0 0);
+  --accent-soft: oklch(0.6 0.19 45 / 0.12);
+  --grain-opacity: 0.035;
+  --inv-bg: oklch(0.17 0 0);
+  --inv-fg: oklch(0.98 0 0);
+  --orange: oklch(0.68 0.2 45);
+  --lime: oklch(0.86 0.21 125);
+  --blue: oklch(0.55 0.23 265);
+  --pink: oklch(0.7 0.22 350);
+  --violet: oklch(0.58 0.23 295);
+  --blob: 0.16;
+}
+
+.dark {
+  --bg: oklch(0.155 0 0);
+  --card: oklch(0.19 0 0);
+  --card-hover: oklch(0.22 0 0);
+  --line: oklch(1 0 0 / 0.08);
+  --fg: oklch(0.97 0 0);
+  --muted: oklch(0.7 0 0);
+  --accent: oklch(0.72 0.18 50);
+  --on-accent: oklch(0.16 0 0);
+  --accent-soft: oklch(0.72 0.18 50 / 0.16);
+  --grain-opacity: 0.06;
+  --inv-bg: oklch(0.98 0 0);
+  --inv-fg: oklch(0.17 0 0);
+  --orange: oklch(0.72 0.19 48);
+  --lime: oklch(0.9 0.21 125);
+  --blue: oklch(0.62 0.21 265);
+  --pink: oklch(0.74 0.21 350);
+  --violet: oklch(0.66 0.21 295);
+  --blob: 0.22;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-card-hover: var(--card-hover);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent: var(--on-accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--bg);
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* film grain */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* card with cursor-following glow */
+.spotlight {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s;
+  background: radial-gradient(
+    380px circle at var(--x, 50%) var(--y, 50%),
+    var(--glow, var(--accent-soft)),
+    transparent 70%
+  );
+}
+.spotlight:hover {
+  border-color: color-mix(in oklch, var(--tbg, var(--accent)) 55%, var(--line));
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+ @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+@property --pr {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 90px;
+}
+
+/* portrait: dim monochrome base, full-colour layer revealed under the cursor */
+.portrait-color {
+  --pr: 90px;
+  transition: --pr 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-mask-image: radial-gradient(circle var(--pr) at var(--px, 50%) var(--py, 36%), black 0%, transparent 100%);
+  mask-image: radial-gradient(circle var(--pr) at var(--px, 50%) var(--py, 36%), black 0%, transparent 100%);
+}
+.portrait-hover .portrait-color {
+  --pr: 230px;
+}
+@keyframes scan {
+  0% { transform: translateY(-10%); opacity: 0; }
+  10%, 90% { opacity: 1; }
+  100% { transform: translateY(1000%); opacity: 0; }
+}
+
+/* ---- vibrant tones: each sets a fill (--tbg), text on fill (--tfg), page-safe ink (--tink) and soft tint ---- */
+.tone-orange { --tbg: var(--orange); --tfg: oklch(0.99 0 0); --tp: var(--orange); }
+.tone-lime   { --tbg: var(--lime);   --tfg: oklch(0.2 0 0);   --tp: var(--lime); }
+.tone-blue   { --tbg: var(--blue);   --tfg: oklch(0.99 0 0); --tp: var(--blue); }
+.tone-pink   { --tbg: var(--pink);   --tfg: oklch(0.2 0 0);   --tp: var(--pink); }
+.tone-violet { --tbg: var(--violet); --tfg: oklch(0.99 0 0); --tp: var(--violet); }
+[class*="tone-"] {
+  --tink: color-mix(in oklch, var(--tp) 78%, var(--fg));
+  --tsoft: color-mix(in oklch, var(--tp) 18%, transparent);
+  --glow: var(--tsoft);
+}
+
+/* solid colour tile */
+.tile {
+  background: var(--tbg);
+  color: var(--tfg);
+  border-color: transparent;
+}
+.tile::before {
+  background: radial-gradient(420px circle at var(--x, 50%) var(--y, 50%), oklch(1 0 0 / 0.28), transparent 70%);
+}
+.tile:hover {
+  border-color: transparent;
+}
+
+/* slow-spinning dashed arcs on the photo card */
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* tinted (non-solid) coloured cards: soft gradient wash from the card's tone */
+.spotlight[class*="tone-"]:not(.tile) {
+  background: linear-gradient(150deg, color-mix(in oklch, var(--tp) 26%, var(--card)) 0%, color-mix(in oklch, var(--tp) 6%, var(--card)) 55%, var(--card) 100%);
+  border-color: color-mix(in oklch, var(--tp) 30%, var(--line));
 }
