@@ -2,6 +2,8 @@ import { Trophy } from "lucide-react";
 import Link from "next/link";
 import { Hero } from "@/components/Hero";
 import { Magnetic } from "@/components/Magnetic";
+import { MiniProfile } from "@/components/MiniProfile";
+import { Pop } from "@/components/Pop";
 import { Portrait } from "@/components/Portrait";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Reveal } from "@/components/Reveal";
@@ -16,9 +18,11 @@ export default function Home() {
   return (
     <div className="grid gap-10 lg:grid-cols-[22rem_minmax(0,1fr)] lg:gap-14">
       {/* profile card: static on desktop while the content scrolls past it */}
-      <aside className="pt-32 lg:sticky lg:top-28 lg:mt-36 lg:self-start lg:pt-0">
+      <aside id="profile-card" className="pt-32 lg:sticky lg:top-28 lg:mt-36 lg:self-start lg:pt-0">
         <Portrait />
       </aside>
+
+      <MiniProfile />
 
       <div className="min-w-0">
       <Hero />
@@ -115,13 +119,12 @@ export default function Home() {
               <SpotlightCard className={`tile tone-${tones[i % 5]} h-full p-6`}>
                 <h3 className="mb-4 font-mono text-xs uppercase tracking-widest opacity-80">{group}</h3>
                 <div className="flex flex-wrap gap-2">
-                  {items.map((s) => (
-                    <span
-                      key={s}
-                      className="rounded-full bg-[color-mix(in_oklch,var(--tfg)_16%,transparent)] px-3 py-1 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--tfg)] hover:text-[var(--tbg)]"
+                  {items.map((s, j) => (
+                    <Pop as="span" key={s} delay={j * 0.045} from={0.4}
+                      className="rounded-full bg-[color-mix(in_oklch,var(--tfg)_16%,transparent)] px-3 py-1 text-sm font-medium transition-[translate,background-color,color] duration-200 hover:-translate-y-0.5 hover:bg-[var(--tfg)] hover:text-[var(--tbg)]"
                     >
                       {s}
-                    </span>
+                    </Pop>
                   ))}
                 </div>
               </SpotlightCard>

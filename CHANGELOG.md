@@ -29,6 +29,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - GitHub Pages deployment: static export (`output: "export"`, unoptimized images, trailing slashes), base path read from `NEXT_PUBLIC_BASE_PATH`, `lib/asset.ts` helper for `/public` URLs and `.github/workflows/deploy.yml` that builds and publishes `out/` on every push to `main`.
 
+- Spring "pop out" entrances across the site (`components/Pop.tsx`, `components/Reveal.tsx`): sections, cards, tiles, project cards, experience rows, hero text, stat counters and individual skill chips scale up with a springy overshoot as they scroll into view. Users with reduced-motion enabled get plain fades (`MotionConfig reducedMotion="user"`).
+- Shared `popTransition` helper (`Pop.tsx`; `Reveal` is now a thin wrapper over `Pop`) and a shared `SocialLinks` component used by the profile card and the phone bar.
+- Phone/tablet profile bar (`components/MiniProfile.tsx`): once the full profile card scrolls out of view, a compact copy (photo, name, role, social links) pops up pinned to the bottom of the screen; the footer has extra bottom padding so it never covers content.
+
 ### Removed
 - Writing is hidden for now via `showWriting = false` in `content/site.ts` (home section, dock, footer, command palette and `/blog` routes return 404); set it to `true` when articles are ready.
 - Custom cursor ring, "blueprint" grid lens and x/y coordinate readout; the native cursor is used everywhere.
@@ -40,6 +44,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Replaced the earlier orange-sunglasses portrait (`portrait.png`) with the blue portrait; hero converted to a two-column layout (text left, portrait right; stacked on mobile).
 
 ### Fixed
+- Pop animation review fixes: hero stats now play as a one-time intro (they no longer wait out the intro delay after scrolling into view) and the count-up starts in sync with their pop (`CountUp` `startAt`); skill chips no longer use `transition-all`, which fought the spring; experience/education rows no longer pop inside an already-popping card; the phone profile bar is capped to `max-w-md` on tablets, only observes scroll on screens under 1024px, and its link label now includes the name.
 - Custom CLM card links to `#experience` (a plain anchor) so it works under a Pages base path.
 - Education block: heading moved out of the card (with a matching "Experience" heading), rows vertically centred and given even padding.
 - Preloader now has a failsafe timeout so it can never stay on screen if animation frames are paused.

@@ -7,10 +7,7 @@ import { useRef } from "react";
 import { site } from "@/content/site";
 import { asset } from "@/lib/asset";
 import { useIntroDelay } from "@/lib/useIntroDelay";
-import { GithubIcon, LinkedinIcon, XIcon } from "./BrandIcons";
-import { Magnetic } from "./Magnetic";
-
-const icons = { GitHub: GithubIcon, LinkedIn: LinkedinIcon, X: XIcon } as const;
+import { SocialLinks } from "./SocialLinks";
 
 /**
  * Inverted photo card (light card on dark theme, dark card on light theme):
@@ -97,22 +94,11 @@ export function Portrait() {
 
         {/* socials */}
         <div className="relative mt-4 flex justify-center gap-2">
-          {site.socials.map((s) => {
-            const Icon = icons[s.label as keyof typeof icons];
-            return (
-              <Magnetic key={s.label} strength={0.5}>
-                <a
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="flex size-10 items-center justify-center rounded-full text-[var(--orange)] transition-colors hover:bg-[var(--orange)] hover:text-white"
-                >
-                  <Icon className="size-[18px]" />
-                </a>
-              </Magnetic>
-            );
-          })}
+          <SocialLinks
+            magnetic
+            linkClass="flex size-10 items-center justify-center rounded-full text-[var(--orange)] transition-colors hover:bg-[var(--orange)] hover:text-white"
+            iconClass="size-[18px]"
+          />
         </div>
       </motion.div>
     </motion.div>

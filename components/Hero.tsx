@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { useIntroDelay } from "@/lib/useIntroDelay";
 import { projects, site } from "@/content/site";
 import { CountUp } from "./CountUp";
+import { popTransition } from "./Pop";
 import { Magnetic } from "./Magnetic";
 import { WordReveal } from "./WordReveal";
 
@@ -45,18 +46,18 @@ export function Hero() {
       </h1>
 
       <motion.p
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: delay + 0.5, duration: 0.7 }}
+        initial={{ opacity: 0, y: 16, scale: 0.9 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={popTransition(delay + 0.5, 200, 15)}
         className="mt-8 max-w-xl text-lg leading-relaxed text-muted"
       >
         {site.intro}
       </motion.p>
 
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: delay + 0.7, duration: 0.7 }}
+        initial={{ opacity: 0, y: 16, scale: 0.9 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={popTransition(delay + 0.7, 200, 15)}
         className="mt-10 flex flex-wrap items-center gap-6"
       >
         <Magnetic>
@@ -79,21 +80,26 @@ export function Hero() {
       </motion.div>
 
 
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: delay + 0.9, duration: 0.7 }}
-        className="mt-12 flex flex-wrap gap-x-10 gap-y-6"
-      >
-        {stats.map((st) => (
-          <div key={st.label} className={`tone-${st.tone}`}>
-            <div className="text-5xl font-extrabold tracking-tight text-[var(--tink)] sm:text-6xl">
-              <CountUp to={st.to} suffix={st.suffix} />
-            </div>
-            <div className="mt-1 font-mono text-[11px] uppercase tracking-widest text-muted">{st.label}</div>
-          </div>
-        ))}
-      </motion.div>
+      {/* intro animation (not whileInView): it plays once after the preloader, wherever the row sits on screen */}
+      <div className="mt-12 flex flex-wrap gap-x-10 gap-y-6">
+        {stats.map((st, i) => {
+          const at = delay + 0.9 + i * 0.12;
+          return (
+            <motion.div
+              key={st.label}
+              initial={{ opacity: 0, scale: 0.5, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={popTransition(at)}
+              className={`tone-${st.tone}`}
+            >
+              <div className="text-5xl font-extrabold tracking-tight text-[var(--tink)] sm:text-6xl">
+                <CountUp to={st.to} suffix={st.suffix} startAt={at} />
+              </div>
+              <div className="mt-1 font-mono text-[11px] uppercase tracking-widest text-muted">{st.label}</div>
+            </motion.div>
+          );
+        })}
+      </div>
       </div>
 
       <div className="mt-20 overflow-hidden border-y border-line py-4 [mask-image:linear-gradient(90deg,transparent,black_12%,black_88%,transparent)]">

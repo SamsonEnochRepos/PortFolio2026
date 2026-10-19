@@ -1,8 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import { Pop } from "./Pop";
 
+/** Layout-level pop: a bigger, slower `Pop` for whole blocks (sections, cards, tiles). */
 export function Reveal({
   children,
   delay = 0,
@@ -13,14 +14,8 @@ export function Reveal({
   className?: string;
 }) {
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
-    >
+    <Pop from={0.9} y={32} margin={-60} stiffness={200} damping={16} delay={delay} className={className}>
       {children}
-    </motion.div>
+    </Pop>
   );
 }

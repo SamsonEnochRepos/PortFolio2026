@@ -4,6 +4,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useRef } from "react";
 import type { Project } from "@/content/site";
+import { popTransition } from "./Pop";
 
 const tones = ["orange", "blue", "lime", "violet", "pink"] as const;
 
@@ -34,10 +35,10 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
         px.set(0.5);
         py.set(0.5);
       }}
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 40, scale: 0.88 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.7, delay: (index % 2) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      transition={popTransition((index % 2) * 0.1, 220, 15)}
       className={`spotlight tone-${tone} group relative flex flex-col justify-between overflow-hidden p-6 ${project.featured ? "min-h-80 md:col-span-2" : "min-h-72"}`}
     >
       <div className="flex items-start justify-between font-mono text-xs text-muted">

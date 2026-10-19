@@ -6,7 +6,7 @@ import { ThemeSwitch } from "./ThemeSwitch";
 export function Footer() {
   return (
     <footer className="mt-10 border-t border-line">
-      <div className="mx-auto max-w-6xl px-5 py-10">
+      <div className="mx-auto max-w-6xl px-5 pb-28 pt-10 lg:pb-10">
         <div className="flex flex-wrap items-start justify-between gap-8">
           <div className="flex flex-wrap gap-x-8 gap-y-2 text-sm text-muted">
             <Link href="/#projects" className="hover:text-fg">Projects</Link>
